@@ -14,6 +14,7 @@ Group:		System/Libraries
 Url:		http://www.freedesktop.org/software/pulseaudio/webrtc-audio-processing/
 Source0:	http://freedesktop.org/software/pulseaudio/webrtc-audio-processing/webrtc-audio-processing-%{version}.tar.xz
 Patch0:		webrtc-ppc64.patch
+Patch1:		webrtc-aarch64.patch	
 
 %description
 WebRTC is an open source project that enables web browsers with Real-Time
@@ -50,9 +51,10 @@ WebRTC implements the W3C's proposal for video conferencing on the web.
 
 %prep
 %setup -q
-%patch0 -p1
+%apply_patches
 
 %build
+autoreconf -fi
 %configure2_5x \
 	--disable-static
 
