@@ -59,7 +59,11 @@ WebRTC implements the W3C's proposal for video conferencing on the web.
 
 %build
 autoreconf -fi
-%configure2_5x \
+%ifnarch x86_64
+export CC=gcc
+export CXX=g++
+%endif
+%configure \
 	--disable-static
 
 %make LIBS="-lpthread"
