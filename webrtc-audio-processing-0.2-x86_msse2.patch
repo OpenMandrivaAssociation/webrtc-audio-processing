@@ -1,0 +1,51 @@
+diff -up webrtc-audio-processing-0.2/webrtc/common_audio/Makefile.am.x86_msse2 webrtc-audio-processing-0.2/webrtc/common_audio/Makefile.am
+--- webrtc-audio-processing-0.2/webrtc/common_audio/Makefile.am.x86_msse2	2015-10-19 01:18:38.000000000 -0500
++++ webrtc-audio-processing-0.2/webrtc/common_audio/Makefile.am	2016-05-27 11:40:19.486145724 -0500
+@@ -93,10 +93,17 @@ libcommon_audio_la_SOURCES = resampler/i
+ 			     window_generator.cc
+ 
+ if HAVE_X86
+-libcommon_audio_la_SOURCES += \
++noinst_LTLIBRARIES += libcommon_audio_sse2.la
++libcommon_audio_sse2_la_SOURCES = \
+ 			     resampler/sinc_resampler_sse.cc \
+ 			     fir_filter_sse.cc \
+ 			     fir_filter_sse.h
++
++libcommon_audio_sse2_la_CFLAGS = $(AM_CFLAGS) $(COMMON_CFLAGS) -msse2
++libcommon_audio_sse2_la_CXXFLAGS = $(AM_CXXFLAGS) $(COMMON_CXXFLAGS) -msse2
++libcommon_audio_sse2_la_LDFLAGS = $(AM_LDFLAGS)
++
++libcommon_audio_la_LIBADD = libcommon_audio_sse2.la
+ endif
+ 
+ if HAVE_ARM
+diff -up webrtc-audio-processing-0.2/webrtc/modules/audio_processing/Makefile.am.x86_msse2 webrtc-audio-processing-0.2/webrtc/modules/audio_processing/Makefile.am
+--- webrtc-audio-processing-0.2/webrtc/modules/audio_processing/Makefile.am.x86_msse2	2016-05-27 11:40:19.484145715 -0500
++++ webrtc-audio-processing-0.2/webrtc/modules/audio_processing/Makefile.am	2016-05-27 11:40:45.627270507 -0500
+@@ -147,9 +147,14 @@ libwebrtc_audio_processing_la_SOURCES +=
+ endif
+ 
+ if HAVE_X86
+-libwebrtc_audio_processing_la_SOURCES += \
++noinst_LTLIBRARIES = libwebrtc_audio_processing_privatearch.la
++LIBWEBRTC_PRIVATEARCH=libwebrtc_audio_processing_privatearch.la
++libwebrtc_audio_processing_privatearch_la_SOURCES = \
+ 					aec/aec_core_sse2.c \
+ 					aec/aec_rdft_sse2.c
++libwebrtc_audio_processing_privatearch_la_CFLAGS = $(AM_CFLAGS) $(COMMON_CFLAGS) -msse2
++libwebrtc_audio_processing_privatearch_la_CXXFLAGS = $(AM_CXXFLAGS) $(COMMON_CXXFLAGS) -msse2
++libwebrtc_audio_processing_privatearch_la_LDFLAGS = $(AM_LDFLAGS)
+ endif
+ 
+ if HAVE_NEON
+@@ -166,7 +171,8 @@ libwebrtc_audio_processing_la_LIBADD = $
+ 				       $(top_builddir)/webrtc/base/libbase.la \
+ 				       $(top_builddir)/webrtc/system_wrappers/libsystem_wrappers.la \
+ 				       $(top_builddir)/webrtc/common_audio/libcommon_audio.la \
+-				       $(top_builddir)/webrtc/modules/audio_coding/libaudio_coding.la -lpthread
++				       $(top_builddir)/webrtc/modules/audio_coding/libaudio_coding.la -lpthread \
++				       $(LIBWEBRTC_PRIVATEARCH)
+ libwebrtc_audio_processing_la_LDFLAGS = $(AM_LDFLAGS) -Wl,--no-undefined -version-info $(LIBWEBRTC_AUDIO_PROCESSING_VERSION_INFO)
+ 
+ # FIXME: The MIPS optimisations need to be hooked up once we have the

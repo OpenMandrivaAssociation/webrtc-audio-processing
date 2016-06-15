@@ -7,12 +7,18 @@
 
 Name:		webrtc-audio-processing
 Version:	0.2
-Release:        1
+Release:        2
 Summary:	Real-Time Communication Library for Web Browsers
 License:	BSD-3-Clause
 Group:		System/Libraries
 Url:		http://www.freedesktop.org/software/pulseaudio/webrtc-audio-processing/
 Source0:	http://freedesktop.org/software/pulseaudio/webrtc-audio-processing/webrtc-audio-processing-%{version}.tar.xz
+Patch0:		webrtc-fix-typedefs-on-other-arches.patch
+# https://bugs.freedesktop.org/show_bug.cgi?id=96244
+Patch1:		webrtc-audio-processing-0.2-no_undefined.patch
+Patch2:		webrtc-audio-processing-0.2-x86_msse2.patch
+# bz#1336466, https://bugs.freedesktop.org/show_bug.cgi?id=95738
+Patch4:		webrtc-audio-processing-0.2-big-endian.patch
 
 %description
 WebRTC is an open source project that enables web browsers with Real-Time
