@@ -1,20 +1,18 @@
 %define oname webrtc
-%define major 0
+%define major 1
 %define libname %mklibname %{oname} %{major}
 %define develname %mklibname %{oname} -d
 
 %define _disable_ld_no_undefined 1
 
 Name:		webrtc-audio-processing
-Version:	0.1
-Release:        17
+Version:	0.2
+Release:        1
 Summary:	Real-Time Communication Library for Web Browsers
 License:	BSD-3-Clause
 Group:		System/Libraries
 Url:		http://www.freedesktop.org/software/pulseaudio/webrtc-audio-processing/
 Source0:	http://freedesktop.org/software/pulseaudio/webrtc-audio-processing/webrtc-audio-processing-%{version}.tar.xz
-Patch0:		webrtc-ppc64.patch
-Patch1:		webrtc-aarch64.patch	
 
 %description
 WebRTC is an open source project that enables web browsers with Real-Time
@@ -69,7 +67,7 @@ find %{buildroot} -name '*.la' -delete
 %{_libdir}/libwebrtc_audio_processing.so.%{major}.*
 
 %files -n %{develname}
-%doc AUTHORS COPYING NEWS PATENTS README
+%doc AUTHORS COPYING NEWS README
 %{_includedir}/webrtc_audio_processing
 %{_libdir}/libwebrtc_audio_processing.so
 %{_libdir}/pkgconfig/webrtc-audio-processing.pc
