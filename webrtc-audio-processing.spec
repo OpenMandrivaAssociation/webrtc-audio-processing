@@ -1,20 +1,24 @@
 %define oname webrtc
-%define major 0
+%define major 1
 %define libname %mklibname %{oname} %{major}
 %define develname %mklibname %{oname} -d
 
 %define _disable_ld_no_undefined 1
 
 Name:		webrtc-audio-processing
-Version:	0.1
-Release:        17
+Version:	0.2
+Release:        2
 Summary:	Real-Time Communication Library for Web Browsers
 License:	BSD-3-Clause
 Group:		System/Libraries
 Url:		http://www.freedesktop.org/software/pulseaudio/webrtc-audio-processing/
 Source0:	http://freedesktop.org/software/pulseaudio/webrtc-audio-processing/webrtc-audio-processing-%{version}.tar.xz
-Patch0:		webrtc-ppc64.patch
-Patch1:		webrtc-aarch64.patch	
+Patch0:		webrtc-fix-typedefs-on-other-arches.patch
+# https://bugs.freedesktop.org/show_bug.cgi?id=96244
+Patch1:		webrtc-audio-processing-0.2-no_undefined.patch
+Patch2:		webrtc-audio-processing-0.2-x86_msse2.patch
+# bz#1336466, https://bugs.freedesktop.org/show_bug.cgi?id=95738
+Patch4:		webrtc-audio-processing-0.2-big-endian.patch
 
 %description
 WebRTC is an open source project that enables web browsers with Real-Time
@@ -55,7 +59,11 @@ WebRTC implements the W3C's proposal for video conferencing on the web.
 
 %build
 autoreconf -fi
-%configure2_5x \
+%ifnarch x86_64
+export CC=gcc
+export CXX=g++
+%endif
+%configure \
 	--disable-static
 
 %make LIBS="-lpthread"
@@ -69,7 +77,7 @@ find %{buildroot} -name '*.la' -delete
 %{_libdir}/libwebrtc_audio_processing.so.%{major}.*
 
 %files -n %{develname}
-%doc AUTHORS COPYING NEWS PATENTS README
+%doc AUTHORS COPYING NEWS README
 %{_includedir}/webrtc_audio_processing
 %{_libdir}/libwebrtc_audio_processing.so
 %{_libdir}/pkgconfig/webrtc-audio-processing.pc
