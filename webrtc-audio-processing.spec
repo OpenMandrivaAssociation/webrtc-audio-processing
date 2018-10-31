@@ -7,7 +7,7 @@
 
 Name:		webrtc-audio-processing
 Version:	0.3
-Release:        1
+Release:        2
 Summary:	Real-Time Communication Library for Web Browsers
 License:	BSD-3-Clause
 Group:		System/Libraries
