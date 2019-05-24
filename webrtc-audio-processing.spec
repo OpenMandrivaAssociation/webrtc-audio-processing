@@ -6,8 +6,8 @@
 %define _disable_ld_no_undefined 1
 
 Name:		webrtc-audio-processing
-Version:	0.3
-Release:        2
+Version:	0.3.1
+Release:        1
 Summary:	Real-Time Communication Library for Web Browsers
 License:	BSD-3-Clause
 Group:		System/Libraries
@@ -51,8 +51,7 @@ components have been optimized to best serve this purpose.
 WebRTC implements the W3C's proposal for video conferencing on the web.
 
 %prep
-%setup -q
-%apply_patches
+%autosetup -p1
 
 %build
 autoreconf -fi
@@ -63,10 +62,10 @@ export CXX=g++
 %configure \
 	--disable-static
 
-%make LIBS="-lpthread"
+%make_build LIBS="-lpthread"
 
 %install
-%makeinstall_std
+%make_install
 find %{buildroot} -name '*.la' -delete
 
 %files -n %{libname}
