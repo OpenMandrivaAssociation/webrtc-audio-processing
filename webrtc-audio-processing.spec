@@ -1,21 +1,20 @@
-%define oname webrtc
-%define major 1
-%define libname %mklibname %{oname} %{major}
-%define develname %mklibname %{oname} -d
+%define major 0
+%define libprocessing %mklibname webrtc-processing %{major}
+%define libcoding %mklibname webrtc-coding %{major}
+%define devname %mklibname webrtc -d
 
 %define _disable_ld_no_undefined 1
 
-Name:		webrtc-audio-processing
-Version:	0.3.1
-Release:        1
 Summary:	Real-Time Communication Library for Web Browsers
+Name:		webrtc-audio-processing
+Version:	1.0
+Release:	1
 License:	BSD-3-Clause
 Group:		System/Libraries
 Url:		http://www.freedesktop.org/software/pulseaudio/webrtc-audio-processing/
-Source0:	http://freedesktop.org/software/pulseaudio/webrtc-audio-processing/webrtc-audio-processing-%{version}.tar.xz
-Patch0:		webrtc-fix-typedefs-on-other-arches.patch
-# bz#1336466, https://bugs.freedesktop.org/show_bug.cgi?id=95738
-Patch4:		webrtc-audio-processing-0.2-big-endian.patch
+Source0:	https://gitlab.freedesktop.org/pulseaudio/webrtc-audio-processing/-/archive/v%{version}/webrtc-audio-processing-v%{version}.tar.gz
+BuildRequires:	meson
+BuildRequires:	abseil-cpp-devel
 
 %description
 WebRTC is an open source project that enables web browsers with Real-Time
@@ -24,56 +23,72 @@ components have been optimized to best serve this purpose.
 
 WebRTC implements the W3C's proposal for video conferencing on the web.
 
-%package -n %{libname}
+#----------------------------------------------------------------------------
+
+%package -n %{libprocessing}
 Summary:	Real-Time Communication Library for Web Browsers
 Group:		System/Libraries
 
-%description -n %{libname}
+%description -n %{libprocessing}
 WebRTC is an open source project that enables web browsers with Real-Time
 Communications (RTC) capabilities via simple Javascript APIs. The WebRTC
 components have been optimized to best serve this purpose.
 
 WebRTC implements the W3C's proposal for video conferencing on the web.
 
-%package -n %{develname}
+%files -n %{libprocessing}
+%{_libdir}/libwebrtc-audio-processing-1.so.%{major}*
+
+#----------------------------------------------------------------------------
+
+%package -n %{libcoding}
+Summary:	Real-Time Communication Library for Web Browsers
+Group:		System/Libraries
+
+%description -n %{libcoding}
+WebRTC is an open source project that enables web browsers with Real-Time
+Communications (RTC) capabilities via simple Javascript APIs. The WebRTC
+components have been optimized to best serve this purpose.
+
+WebRTC implements the W3C's proposal for video conferencing on the web.
+
+%files -n %{libcoding}
+%{_libdir}/libwebrtc-audio-coding-1.so.%{major}*
+
+#----------------------------------------------------------------------------
+
+%package -n %{devname}
 Summary:	Real-Time Communication Library for Web Browsers
 Group:		Development/C
-Requires:	%{libname} = %{version}-%{release}
-Provides:	webrtc-audio-processing-devel = %{version}-%{release}
-Provides:	webrtc-audio-processing-devel-static = %{version}-%{release}
+Requires:	%{libprocessing} = %{EVRD}
+Requires:	%{libcoding} = %{EVRD}
+Provides:	webrtc-audio-processing-devel = %{EVRD}
+Provides:	webrtc-audio-processing-devel-static = %{EVRD}
 Obsoletes:	%{mklibname webrtc -d -s} < 0.1-2
 
-%description -n %{develname}
+%description -n %{devname}
 WebRTC is an open source project that enables web browsers with Real-Time
 Communications (RTC) capabilities via simple Javascript APIs. The WebRTC
 components have been optimized to best serve this purpose.
 
 WebRTC implements the W3C's proposal for video conferencing on the web.
 
+%files -n %{devname}
+%doc AUTHORS COPYING NEWS README
+%{_includedir}/webrtc-audio-processing-1/
+%{_libdir}/libwebrtc-audio-processing-1.so
+%{_libdir}/libwebrtc-audio-coding-1.so
+%{_libdir}/pkgconfig/webrtc-*.pc
+
+#----------------------------------------------------------------------------
+
 %prep
-%autosetup -p1
+%autosetup -p1 -n %{name}-v%{version}
+sed -i 's!absl_flags_registry!absl_flags_reflection!g' meson.build
 
 %build
-autoreconf -fi
-%ifnarch x86_64
-export CC=gcc
-export CXX=g++
-%endif
-%configure \
-	--disable-static
-
-%make_build LIBS="-lpthread"
+%meson
+%meson_build
 
 %install
-%make_install
-find %{buildroot} -name '*.la' -delete
-
-%files -n %{libname}
-%{_libdir}/libwebrtc_audio_processing.so.%{major}
-%{_libdir}/libwebrtc_audio_processing.so.%{major}.*
-
-%files -n %{develname}
-%doc AUTHORS COPYING NEWS README
-%{_includedir}/webrtc_audio_processing
-%{_libdir}/libwebrtc_audio_processing.so
-%{_libdir}/pkgconfig/webrtc-audio-processing.pc
+%meson_install
