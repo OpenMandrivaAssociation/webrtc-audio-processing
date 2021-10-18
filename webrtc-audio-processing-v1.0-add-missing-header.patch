@@ -1,0 +1,11 @@
+diff -Naur webrtc-audio-processing-v1.0/webrtc/modules/audio_processing/aec3/reverb_frequency_response.h webrtc-audio-processing-v1.0.tpg/webrtc/modules/audio_processing/aec3/reverb_frequency_response.h
+--- webrtc-audio-processing-v1.0/webrtc/modules/audio_processing/aec3/reverb_frequency_response.h	2020-11-27 19:30:53.000000000 +0000
++++ webrtc-audio-processing-v1.0.tpg/webrtc/modules/audio_processing/aec3/reverb_frequency_response.h	2021-10-19 17:30:29.318939502 +0000
+@@ -11,6 +11,7 @@
+ #ifndef MODULES_AUDIO_PROCESSING_AEC3_REVERB_FREQUENCY_RESPONSE_H_
+ #define MODULES_AUDIO_PROCESSING_AEC3_REVERB_FREQUENCY_RESPONSE_H_
+ 
++#include <memory>
+ #include <array>
+ #include <vector>
+ 
