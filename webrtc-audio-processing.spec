@@ -1,12 +1,18 @@
 %define major 1
-%define libprocessing %mklibname webrtc-processing %{major}
-%define libcoding %mklibname webrtc-coding %{major}
+
+%define libprocessing %mklibname webrtc-processing
+%define libcoding %mklibname webrtc-coding
 %define devname %mklibname webrtc -d
+
+%define veryoldlibprocessing %mklibname webrtc-processing 0
+%define veryoldlibcoding %mklibname webrtc-coding 0
+%define oldlibprocessing %mklibname webrtc-processing 1
+%define oldlibcoding %mklibname webrtc-coding 1
 
 Summary:	Real-Time Communication Library for Web Browsers
 Name:		webrtc-audio-processing
 Version:	1.1
-Release:	2
+Release:	3
 License:	BSD-3-Clause
 Group:		System/Libraries
 Url:		http://www.freedesktop.org/software/pulseaudio/webrtc-audio-processing/
@@ -26,6 +32,8 @@ WebRTC implements the W3C's proposal for video conferencing on the web.
 %package -n %{libprocessing}
 Summary:	Real-Time Communication Library for Web Browsers
 Group:		System/Libraries
+%rename		%{oldlibprocessing}
+Obsoletes:	%{veryoldlibprocessing} < %{EVRD}
 
 %description -n %{libprocessing}
 WebRTC is an open source project that enables web browsers with Real-Time
@@ -42,6 +50,8 @@ WebRTC implements the W3C's proposal for video conferencing on the web.
 %package -n %{libcoding}
 Summary:	Real-Time Communication Library for Web Browsers
 Group:		System/Libraries
+%rename		%{oldlibcoding}
+Obsoletes:	%{veryoldlibcoding} < %{EVRD}
 
 %description -n %{libcoding}
 WebRTC is an open source project that enables web browsers with Real-Time
