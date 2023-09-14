@@ -91,7 +91,7 @@ WebRTC implements the W3C's proposal for video conferencing on the web.
 #----------------------------------------------------------------------------
 
 %prep
-%autosetup  -p1
+%autosetup -n %{name}-v%{version} -p1
 
 %build
 %meson
