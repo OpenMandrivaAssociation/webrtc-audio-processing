@@ -1,4 +1,4 @@
-%define major 1
+%define major 3
 
 %define libprocessing %mklibname webrtc-processing
 %define libcoding %mklibname webrtc-coding
@@ -11,12 +11,12 @@
 
 Summary:	Real-Time Communication Library for Web Browsers
 Name:		webrtc-audio-processing
-Version:	1.1
-Release:	3
+Version:	1.3
+Release:	1
 License:	BSD-3-Clause
 Group:		System/Libraries
 Url:		http://www.freedesktop.org/software/pulseaudio/webrtc-audio-processing/
-Source0:	https://gitlab.freedesktop.org/pulseaudio/webrtc-audio-processing/-/archive/v%{version}/%{name}-%{version}.tar.gz
+Source0:	https://gitlab.freedesktop.org/pulseaudio/webrtc-audio-processing/-/archive/v%{version}/%{name}-v%{version}.tar.bz2
 BuildRequires:	meson
 BuildRequires:	abseil-cpp-devel
 
@@ -91,7 +91,7 @@ WebRTC implements the W3C's proposal for video conferencing on the web.
 #----------------------------------------------------------------------------
 
 %prep
-%autosetup  -p1
+%autosetup -n %{name}-v%{version} -p1
 
 %build
 %meson
