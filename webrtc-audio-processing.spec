@@ -1,4 +1,4 @@
-%define major 1
+%define major 3
 
 %define libprocessing %mklibname webrtc-processing
 %define libcoding %mklibname webrtc-coding
