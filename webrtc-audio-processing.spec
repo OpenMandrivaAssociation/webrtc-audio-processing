@@ -12,7 +12,7 @@
 Summary:	Real-Time Communication Library for Web Browsers
 Name:		webrtc-audio-processing
 Version:	1.3
-Release:	1
+Release:	2
 License:	BSD-3-Clause
 Group:		System/Libraries
 Url:		http://www.freedesktop.org/software/pulseaudio/webrtc-audio-processing/
