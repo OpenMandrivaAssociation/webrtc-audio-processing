@@ -15,7 +15,7 @@ Version:	1.3
 Release:	2
 License:	BSD-3-Clause
 Group:		System/Libraries
-Url:		http://www.freedesktop.org/software/pulseaudio/webrtc-audio-processing/
+Url:		https://www.freedesktop.org/software/pulseaudio/webrtc-audio-processing/
 Source0:	https://gitlab.freedesktop.org/pulseaudio/webrtc-audio-processing/-/archive/v%{version}/%{name}-v%{version}.tar.bz2
 BuildRequires:	meson
 BuildRequires:	abseil-cpp-devel
